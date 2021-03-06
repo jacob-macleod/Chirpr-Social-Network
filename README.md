@@ -18,7 +18,7 @@ Chirpr is an Open Source, Privacy Focused Social Media App
 
 
 ## Installation
-Once I've developed Chirpr, I'll add git and installation instructions for it
+Once I've developed Chirpr, I'll add git and docker installation instructions for it
  
 ## Usage
 Once I've developed it, I'd like to host Chirpr on a cloud server
