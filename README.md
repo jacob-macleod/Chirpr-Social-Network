@@ -1,5 +1,5 @@
 - [Chirpr](#chirpr)
-  - [Planned and Implemented Features:](#planned-and-implemented-features)
+  - [Planned and/or Implemented Features:](#planned-andor-implemented-features)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Collaboration](#collaboration)
@@ -9,7 +9,7 @@ Chirpr is an Open Source, Privacy Focused Social Media App
 
 **IN PROGRESS** - I'm still developing the basic features - it'll take a few weeks!
 
-## Planned and Implemented Features:
+## Planned and/or Implemented Features:
 * Following Page
 * Likes and Comments
 * Posts
