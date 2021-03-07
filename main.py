@@ -15,21 +15,58 @@ posts = database["posts"]
 login_data = database["login_data"]
 
 
+#Clumsily-named but self-explanitory
+def find_whether_cookies_or_parameters_store_username () :
+    global username
+
+    if request.cookies.get("username") != None or request.cookies.get("username") != "":
+        return "cookies"
+    elif username != "" :
+        return "variables"
+    else :
+        return None
+
 @app.route("/")
 def index():
     global username
+    if username == "" and request.cookies.get("username") != None or request.cookies.get("username") != "":
+        username = request.cookies.get("username")
+
 
     post_contents = request.cookies.get("post")
+    
+    #print (posts.find_one({"username":{"$eq":request.cookies.get("username")}}).get("username"))
+    print (find_whether_cookies_or_parameters_store_username())
+
+    #Save all the posts a user has made to an array and if needed, saves new posts to an array
+    user_posts = []
+    if find_whether_cookies_or_parameters_store_username() == "cookies" :
+        if post_contents != "%NoneValue%" :
+            post_data = {"username":request.cookies.get("username"), "post":post_contents}
+            posts.insert_one(post_data)
+
+    elif find_whether_cookies_or_parameters_store_username() == "variables" :
+        if post_contents != "%NoneValue%" :
+            post_data = {"username":username, "post":post_contents}
+            posts.insert_one(post_data)
+
+
+    #Save all posts user has made to an array
+    #Check for null values before actually defining user_posts
+    try :
+        for x in posts.find({"username":{"$eq":username}}, {"_id":0}) :
+            user_posts.append(x.get("post"))
+    except :
+        user_posts = ["Please enter a post to view them!"]
+
+
+    
     #If the user is not logged in
     if request.cookies.get("username") == None or request.cookies.get("username") == "" and username == "":
         return render_template("login.html", username=username)
     else :
-        return render_template("index.html", username=username)
-
-    if post_contents != "%NoneValue%" :
-        post_data = {"username":"Jacob", "post":post_contents}
-        posts.insert(post_data)
-    return render_template("index.html", username=username)
+        return render_template("index.html", username=username, user_posts=user_posts)
+    return render_template("index.html", username=username, user_posts=user_posts)
 
 
 

@@ -6,19 +6,31 @@
 <head>
 </head>
 <body>
-<p class="description">What's on your mind?</p>
-<textarea id = "text_box"></textarea>
+<p class="header">What's on your mind?</p>
+<textarea cols="40" rows = "5" id="text_box" class="post_input" placeholder="Write something here"></textarea>
 <br>
-<button class="button" onclick="post()">Post</button>
+<button class="button" onclick="post_thingamijigy()">Post</button>
+<p class="header">Some of your previous posts:</p>
+<div id ="old_posts_body"></div>
 </body>
 <script>
     document.cookie="post=%NoneValue%"
     document.cookie="username={{username}}"
-    console.log("{{ username }}")
+    user_posts = {{ user_posts|tojson }}    
+
+    //For each of the items in user_posts, create a paragraph with the data of user_posts[i]
+    for (i=0;i<user_posts.length;i++) {
+      var post = document.createElement("p")
+      post.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+      post.setAttribute("class", "description")
+      post.innerHTML = user_posts[i]
+
+      posts_body = document.getElementById("old_posts_body")
+      posts_body.appendChild(post)
+    }
 
 
-
-    function post() {
+    function post_thingamijigy () {
         textarea = document.getElementById("text_box").value
         console.log(textarea)
         document.cookie="post="+textarea
@@ -30,6 +42,16 @@
 <style>
     body {
     background: #FFFFFF;
+  }
+
+  .post_input {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+  
+    color: #666172;
   }
 
   .button {
