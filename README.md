@@ -24,4 +24,4 @@ Once I've developed Chirpr, I'll add git and docker installation instructions fo
 Once I've developed it, I'd like to host Chirpr on a cloud server
 
 ## Collaboration
-If you wish to collaborate, please open an issue and let me know!
+If you wish to collaborate, please open an issue to let me know!
