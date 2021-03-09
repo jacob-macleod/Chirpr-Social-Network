@@ -7,6 +7,8 @@
     <p class="header">Sign Up</p>
     <p class="description">And get ready to experience FOMO!</p>
     <form action="{{ url_for("sign_up")}}" method="post"> 
+        <p class="description" for="biography">Biography</p> 
+        <input class="input" type="text" id="biography" name="bio" placeholder="Something about you..."> 
         <p class="description" for="username">Name</p> 
         <input class="input" type="text" id="username" name="uname" placeholder="username"> 
         <br>

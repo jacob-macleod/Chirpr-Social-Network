@@ -96,19 +96,13 @@ def replace_single_with_double_quotes (string) :
 
 
 
-print (json.dumps({'username':'username', 'password':'password'}))
-
-hi = replace_single_with_double_quotes("{'hi', 'hi'}")
-print (hi)
 @app.route("/")
 def index():
     global username
-    print (username)
     if username == "":
         if request.cookies.get("username") != None or request.cookies.get("username") != "":
             username = request.cookies.get("username")
-            print (username)
-    print (username)
+
 
     post_contents = request.cookies.get("post")
     
@@ -149,6 +143,7 @@ def index():
 def sign_up () :
     global username
     if request.method == "POST":
+        bio = request.form.get("bio")
         username = request.form.get("uname") 
         password = request.form.get("pword") 
         password_confirm = request.form.get("pword_confirm") 
@@ -165,7 +160,7 @@ def sign_up () :
             username = ""
             return render_template("login_failed.html")
         else :
-            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password)}
+            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password), encrypt("bio"):encrypt(bio)}
             login_data.insert_one(login)
             return render_template("redirect_to_index.html")
     return render_template("sign_up.html", username=username)
@@ -190,6 +185,15 @@ def sign_in () :
             return render_template("signin_failed.html")
     return render_template("sign_in.html")
 
+@app.route("/profile")
+def profile () :
+    #TODO: Change to equal the profile the user has clicked on - when I've enabled profile searching
+    username = request.cookies.get("username")
+    try :
+        bio = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(username)}}).get(encrypt("bio")))
+    except :
+        return "<h1>Sorry, here's been an intenal server error</h1><p>The server either doesn't know who's profile you want to see or the person's profile that you want to see doesn't exist</p>"
+    return render_template("profile.html", username=username, bio=bio)
 
 if __name__ == "__main__":
     app.run(port=5001)
