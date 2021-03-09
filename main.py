@@ -3,6 +3,8 @@ import pymongo
 import json
 import ast
 
+print ("Remember to start mongodb in the terminal, possibly using sudo systemctl start mongod!")
+
 app = Flask(__name__)
 global username
 username = ""
@@ -187,13 +189,43 @@ def sign_in () :
 
 @app.route("/profile")
 def profile () :
+    user_posts = []
+    profile = request.cookies.get("profile_clicked")
+
+
     #TODO: Change to equal the profile the user has clicked on - when I've enabled profile searching
-    username = request.cookies.get("username")
     try :
-        bio = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(username)}}).get(encrypt("bio")))
+        bio = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile)}}).get(encrypt("bio")))
     except :
         return "<h1>Sorry, here's been an intenal server error</h1><p>The server either doesn't know who's profile you want to see or the person's profile that you want to see doesn't exist</p>"
-    return render_template("profile.html", username=username, bio=bio)
+    
+    #Save all posts user has made to an array
+    #Check for null values before actually defining user_posts
+    try :
+        for x in posts.find({"username":{"$eq":profile}}, {"_id":0}) :
+            user_posts.append(x.get("post"))
+    except :
+        user_posts = ["Please enter a post to view them!"]
+    
+    return render_template("profile.html", username=profile, bio=bio, posts=user_posts)
+
+
+@app.route("/search", methods=["POST", "GET"])
+def search () :
+    search_results = []
+
+    #If the user searches for something
+    if request.method == "POST":
+        search_term = request.form.get("search") 
+        #Save usernames with search_term in and save them to an array 
+        for x in login_data.find() :
+            if search_term in decrypt(x.get(encrypt("username"))) :
+                search_results.append(decrypt(x.get(encrypt("username"))))
+        return render_template("profile_search.html", results=search_results)
+
+    #If the user doesn't search
+    return render_template("profile_search.html", results="None")
+
 
 if __name__ == "__main__":
     app.run(port=5001)

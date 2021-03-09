@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html>
     <head></head>
-    <p class="header">{{ username }}</p>
-    <p class="description">{{ bio }}</p>
-    <div id="posts_body"></div>
     <body>
-        <script>
-            user_posts = {{ posts|tojson }}
+    <form action="{{ url_for("search")}}" method="post"> 
+        <p class="header" for="search">Search for a profile:</p> 
+        <input class="input" type="text" id="search" name="search" placeholder="Search here!"> 
+        <br>
+        <br>
+        <button class="button" type="submit">Search</button> 
+        <br>
+        <br>
+        <div id ="result_body"></div>
+      </body>
+      <script>
+        results = {{ results|tojson}}        
 
-            //For each of the items in user_posts, create a paragraph with the data of user_posts[i]
-            for (i=0;i<user_posts.length;i++) {
-            var post = document.createElement("p")
-            post.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
-            post.setAttribute("class", "description")
-            post.innerHTML = user_posts[i]
+        //For each of the items in results, create a paragraph with the data of results[i]
+        for (i=0;i<results.length;i++) {
+          var result = document.createElement("a")
+          result.innerHTML = results[i]
 
-            posts_body = document.getElementById("posts_body")
-            posts_body.appendChild(post)
-            }
-        </script>
+          result.setAttribute("class", "link")
+          result.setAttribute("href", "/profile")
+          result.setAttribute("onclick", "document.cookie='profile_clicked="+result.innerHTML+"'")
+
+          result_body = document.getElementById("result_body")
+          result_body.appendChild(result)
+          result_body.appendChild(document.createElement("br"))
+          result_body.appendChild(document.createElement("br"))
+
+        }
+      </script>
+
     </body>
     <style>
            body {
