@@ -103,14 +103,15 @@ print (hi)
 @app.route("/")
 def index():
     global username
-    if username == "" and request.cookies.get("username") != None or request.cookies.get("username") != "":
-        username = request.cookies.get("username")
-
+    print (username)
+    if username == "":
+        if request.cookies.get("username") != None or request.cookies.get("username") != "":
+            username = request.cookies.get("username")
+            print (username)
+    print (username)
 
     post_contents = request.cookies.get("post")
     
-    #print (posts.find_one({"username":{"$eq":request.cookies.get("username")}}).get("username"))
-    print (find_whether_cookies_or_parameters_store_username())
 
     #Save all the posts a user has made to an array and if needed, saves new posts to an array
     user_posts = []
