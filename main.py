@@ -96,7 +96,29 @@ def replace_single_with_double_quotes (string) :
             replaced_string = replaced_string + split_string[i]
     return replaced_string
 
+#TODO: Remove below comments
+#TODO: Make follow button on /profile page get changed inactivated when you've followed that button into a 
+#grey "following" button and make it unfollow the person then when clicked instead of follow
+#TODO: Show number of followers on profile page
 
+#TODO: Make every app route run this 
+#If you need to follow someone, follow them
+def check_for_follow (user_name) :
+    #Iterate through login_data and get value for username, then the following thing for username. If no no values in this value == the cookie
+    #Followed, append the value of the cookie followed to login_data  following
+    try :
+        for x in login_data.find() :
+            name = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("username")))
+            following = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("following")))
+            #print (request.cookie.get("followed"))
+            #print (following)
+            if following not in request.cookies.get("followed"):
+                login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
+                return decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("following")))
+    except:
+        pass
+
+#print (decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt("Jacob3")}}).get(encrypt("following"))))
 
 @app.route("/")
 def index():
@@ -162,7 +184,7 @@ def sign_up () :
             username = ""
             return render_template("login_failed.html")
         else :
-            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password), encrypt("bio"):encrypt(bio)}
+            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password), encrypt("bio"):encrypt(bio), encrypt("following"):encrypt("%" + encrypt(username))}
             login_data.insert_one(login)
             return render_template("redirect_to_index.html")
     return render_template("sign_up.html", username=username)
@@ -191,9 +213,9 @@ def sign_in () :
 def profile () :
     user_posts = []
     profile = request.cookies.get("profile_clicked")
+    check_for_follow(request.cookies.get("username"))
 
 
-    #TODO: Change to equal the profile the user has clicked on - when I've enabled profile searching
     try :
         bio = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile)}}).get(encrypt("bio")))
     except :

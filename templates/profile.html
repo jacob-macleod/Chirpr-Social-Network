@@ -3,9 +3,14 @@
     <head></head>
     <p class="header">{{ username }}</p>
     <p class="description">{{ bio }}</p>
+    <button class="button" onclick="follow()">Follow</button>
     <div id="posts_body"></div>
     <body>
         <script>
+            function follow () {
+              document.cookie="followed={{username}}"
+              window.open("/profile", "_self")
+            }
             user_posts = {{ posts|tojson }}
 
             //For each of the items in user_posts, create a paragraph with the data of user_posts[i]
