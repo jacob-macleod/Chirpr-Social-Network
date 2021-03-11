@@ -105,8 +105,8 @@ def check_for_follow (user_name, profile_name, mode) :
     #Followed, append the value of the cookie followed to login_data  following
     try :
         for x in login_data.find() :
-            name = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("username")))
-            following = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("following")))
+            name = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile_name)}}).get(encrypt("username")))
+            following = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile_name)}}).get(encrypt("following")))
             
             #Detect --%---/ symbol which means unfollow 
             if request.cookies.get("followed").split("/")[0] == "--%---" :
@@ -123,7 +123,7 @@ def check_for_follow (user_name, profile_name, mode) :
 
                 #Update following_str (following minus the username you want to follow) to mongodb
                 if mode == "edit" :
-                    login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following_str)}})
+                    login_data.update_one({encrypt("username"):encrypt(profile_name)}, {"$set": {encrypt("following"):encrypt(following_str)}})
                 return "False"
 
             else :
@@ -133,7 +133,7 @@ def check_for_follow (user_name, profile_name, mode) :
 
                     #Follow the username in cookies "followed" if the conditions are right
                     if mode == "edit" and request.cookies.get("followed") != "%NoneValue%":
-                        login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
+                        login_data.update_one({encrypt("username"):encrypt(profile_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
 
                 #Detect if profile_name has been folowed
                 following = following.split("%")
@@ -148,7 +148,21 @@ def check_for_follow (user_name, profile_name, mode) :
         print (e)
         return "False"
 
-#print (decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt("Jacob3")}}).get(encrypt("following"))))
+
+def count_followers() :
+    profile_name = request.cookies.get("profile_clicked")
+    followers = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile_name)}}).get(encrypt("following"))).split("%")
+    i = 0
+    follower_count = 0
+
+
+    for i in range(0, len(followers)) :
+        if followers[i] != "" :
+            follower_count = follower_count + 1
+        i = i + 1
+
+    return follower_count
+
 
 @app.route("/")
 def index():
@@ -261,7 +275,7 @@ def profile () :
         user_posts = ["Please enter a post to view them!"]
     
     #Returns check_follow AFTER relevant changes have been made
-    return render_template("profile.html", username=profile, bio=bio, posts=user_posts, check_follow=check_for_follow(request.cookies.get("username"), profile, "view"))
+    return render_template("profile.html", username=profile, bio=bio, posts=user_posts, check_follow=check_for_follow(request.cookies.get("username"), profile, "view"), followers=count_followers())
 
 
 @app.route("/search", methods=["POST", "GET"])
