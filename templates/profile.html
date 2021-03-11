@@ -3,13 +3,30 @@
     <head></head>
     <p class="header">{{ username }}</p>
     <p class="description">{{ bio }}</p>
-    <button class="button" onclick="follow()">Follow</button>
+    <button id="follow_button" class="button" onclick="follow()">Follow</button>
     <div id="posts_body"></div>
     <body>
         <script>
+            //Reset followed
+            document.cookie="followed=%NoneValue%"
+
+
+            check_follow = "{{ check_follow }}"
+            //Change the button based on whether the profile has been followed by the user
+            if (check_follow == "True") {
+              document.getElementById("follow_button").setAttribute("class", "inactive_button")
+              document.getElementById("follow_button").innerHTML = "Following"
+            }
+
+
             function follow () {
-              document.cookie="followed={{username}}"
-              window.open("/profile", "_self")
+              if (check_follow == "False") {
+                document.cookie="followed={{username}}"
+                window.open("/profile", "_self")
+              } else {
+                document.cookie="followed=--%---/{{username}}"
+                window.open("/profile", "_self")
+              }
             }
             user_posts = {{ posts|tojson }}
 

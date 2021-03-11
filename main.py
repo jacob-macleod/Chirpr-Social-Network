@@ -96,27 +96,57 @@ def replace_single_with_double_quotes (string) :
             replaced_string = replaced_string + split_string[i]
     return replaced_string
 
-#TODO: Remove below comments
-#TODO: Make follow button on /profile page get changed inactivated when you've followed that button into a 
-#grey "following" button and make it unfollow the person then when clicked instead of follow
-#TODO: Show number of followers on profile page
 
-#TODO: Make every app route run this 
-#If you need to follow someone, follow them
-def check_for_follow (user_name) :
+#If you need to follow or unfollow someone, follow or unfollow them, or if mode=="view", only check if they are followed
+def check_for_follow (user_name, profile_name, mode) :
+    following = ""
+    name = ""
     #Iterate through login_data and get value for username, then the following thing for username. If no no values in this value == the cookie
     #Followed, append the value of the cookie followed to login_data  following
     try :
         for x in login_data.find() :
             name = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("username")))
             following = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("following")))
-            #print (request.cookie.get("followed"))
-            #print (following)
-            if following not in request.cookies.get("followed"):
-                login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
-                return decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(user_name)}}).get(encrypt("following")))
-    except:
-        pass
+            
+            #Detect --%---/ symbol which means unfollow 
+            if request.cookies.get("followed").split("/")[0] == "--%---" :
+                #Unfollow user_name
+                following = following.split("%")
+                following_str = ""
+
+                #Save following to a new str but don't count following[i] if the username == the username you want to unfollow 
+                for i in range(0, len(following)) :
+                    if following[i] != request.cookies.get("followed").split("/")[1] :
+                        if following[i] != "" :
+                            following_str = following_str + "%" + following[i]
+                    i = i + 1
+
+                #Update following_str (following minus the username you want to follow) to mongodb
+                if mode == "edit" :
+                    login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following_str)}})
+                return "False"
+
+            else :
+                #If the cookie followed is in the list of people followed of user_name
+                if request.cookies.get("followed") not in following:
+                    x = following + "%" + request.cookies.get("followed")
+
+                    #Follow the username in cookies "followed" if the conditions are right
+                    if mode == "edit" and request.cookies.get("followed") != "%NoneValue%":
+                        login_data.update_one({encrypt("username"):encrypt(user_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
+
+                #Detect if profile_name has been folowed
+                following = following.split("%")
+                for i in range(0, len(following)) :
+                    if profile_name == following[i] :
+                        return "True"
+                    i = i + 1
+
+                #If a profile_name follow has not been detected
+                return "False"
+    except Exception as e:
+        print (e)
+        return "False"
 
 #print (decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt("Jacob3")}}).get(encrypt("following"))))
 
@@ -213,7 +243,8 @@ def sign_in () :
 def profile () :
     user_posts = []
     profile = request.cookies.get("profile_clicked")
-    check_for_follow(request.cookies.get("username"))
+    #Follow users if you need to
+    check_for_follow(request.cookies.get("username"), profile, "edit")
 
 
     try :
@@ -229,7 +260,8 @@ def profile () :
     except :
         user_posts = ["Please enter a post to view them!"]
     
-    return render_template("profile.html", username=profile, bio=bio, posts=user_posts)
+    #Returns check_follow AFTER relevant changes have been made
+    return render_template("profile.html", username=profile, bio=bio, posts=user_posts, check_follow=check_for_follow(request.cookies.get("username"), profile, "view"))
 
 
 @app.route("/search", methods=["POST", "GET"])
