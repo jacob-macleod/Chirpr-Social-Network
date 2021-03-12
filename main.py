@@ -116,7 +116,8 @@ def check_for_follow (user_name, profile_name, mode) :
 
                 #Save following to a new str but don't count following[i] if the username == the username you want to unfollow 
                 for i in range(0, len(following)) :
-                    if following[i] != request.cookies.get("followed").split("/")[1] :
+                    print (request.cookies.get("username"))
+                    if following[i] != request.cookies.get("username") :
                         if following[i] != "" :
                             following_str = following_str + "%" + following[i]
                     i = i + 1
@@ -133,12 +134,12 @@ def check_for_follow (user_name, profile_name, mode) :
 
                     #Follow the username in cookies "followed" if the conditions are right
                     if mode == "edit" and request.cookies.get("followed") != "%NoneValue%":
-                        login_data.update_one({encrypt("username"):encrypt(profile_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("followed"))}})
+                        login_data.update_one({encrypt("username"):encrypt(profile_name)}, {"$set": {encrypt("following"):encrypt(following + "%" + request.cookies.get("username"))}})
 
                 #Detect if profile_name has been folowed
                 following = following.split("%")
                 for i in range(0, len(following)) :
-                    if profile_name == following[i] :
+                    if username == following[i] :
                         return "True"
                     i = i + 1
 
@@ -162,6 +163,27 @@ def count_followers() :
         i = i + 1
 
     return follower_count
+
+
+#Finds all posts from the users the currently logged in user has followed
+def find_follower_posts () :
+    username = request.cookies.get("username")
+    
+    if username != None :
+        for x in login_data.find() :
+            x = x.get(encrypt("following")).split("%")
+            for i in range(0, len(x)) :
+                s = decrypt(x[i])
+                if username == decrypt(x[i]) :
+                    print ("Match found! - x is " + decrypt(x[i]))
+                i = i + 1
+
+    #If the user is not logged in
+    else :
+        return ["You aren't logged in!"]
+
+
+
 
 
 @app.route("/")
@@ -228,7 +250,7 @@ def sign_up () :
             username = ""
             return render_template("login_failed.html")
         else :
-            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password), encrypt("bio"):encrypt(bio), encrypt("following"):encrypt("%" + encrypt(username))}
+            login = {encrypt("username"):encrypt(username), encrypt("password"):encrypt(password), encrypt("bio"):encrypt(bio), encrypt("following"):encrypt("%" + username)}
             login_data.insert_one(login)
             return render_template("redirect_to_index.html")
     return render_template("sign_up.html", username=username)
@@ -293,6 +315,11 @@ def search () :
 
     #If the user doesn't search
     return render_template("profile_search.html", results="None")
+
+@app.route("/following", methods=["POST", "GET"])
+def following () :
+    find_follower_posts()
+    return render_template("following.html")
 
 
 if __name__ == "__main__":
