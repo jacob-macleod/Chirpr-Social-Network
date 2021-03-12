@@ -169,6 +169,7 @@ def count_followers() :
 def find_follower_posts () :
     username = request.cookies.get("username")
     users = [""]
+    post_list = []
     i = 0
 
     if username != None :
@@ -183,13 +184,13 @@ def find_follower_posts () :
         for i in posts.find() :
             for z in range (0, len(users)) :
                 try :
-                    print ("username " + i.get("username"))
-                    print (decrypt(users[z]))
                     if i.get("username") == decrypt(users[z]) :
-                        print ("Matched!")
+                        post_list.append(i.get("post"))
                 except:
                     pass
                 z = z + 1
+        return post_list
+
 
     #If the user is not logged in
     else :
@@ -331,8 +332,7 @@ def search () :
 
 @app.route("/following", methods=["POST", "GET"])
 def following () :
-    find_follower_posts()
-    return render_template("following.html")
+    return render_template("following.html", posts=find_follower_posts())
 
 
 if __name__ == "__main__":

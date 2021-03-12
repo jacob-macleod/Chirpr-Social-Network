@@ -2,8 +2,25 @@
 <html>
     <head></head>
     <p class="header">Latest Posts</p>
-    <p class="description">From people you've followed</p>
-    <body></body>
+    <p class="description">From people you're following</p>
+    <div id="old_posts_body"></div>
+    <body>
+      <script>
+        posts = {{ posts|tojson }}
+
+        //For each of the items in posts, create a paragraph with the data of posts[i]
+        for (i=0;i<posts.length;i++) {
+          var post = document.createElement("p")
+          post.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+          post.setAttribute("class", "description")
+          post.innerHTML = posts[i]
+
+          posts_body = document.getElementById("old_posts_body")
+          posts_body.appendChild(post)
+        }
+
+      </script>
+    </body>
     <style>
            body {
     background: #FFFFFF;
