@@ -168,15 +168,28 @@ def count_followers() :
 #Finds all posts from the users the currently logged in user has followed
 def find_follower_posts () :
     username = request.cookies.get("username")
-    
+    users = [""]
+    i = 0
+
     if username != None :
-        for x in login_data.find() :
-            x = x.get(encrypt("following")).split("%")
+        for y in login_data.find() :
+            x = y.get(encrypt("following")).split("%")
             for i in range(0, len(x)) :
                 s = decrypt(x[i])
                 if username == decrypt(x[i]) :
-                    print ("Match found! - x is " + decrypt(x[i]))
+                    users.append(y.get(encrypt("username")))
                 i = i + 1
+
+        for i in posts.find() :
+            for z in range (0, len(users)) :
+                try :
+                    print ("username " + i.get("username"))
+                    print (decrypt(users[z]))
+                    if i.get("username") == decrypt(users[z]) :
+                        print ("Matched!")
+                except:
+                    pass
+                z = z + 1
 
     #If the user is not logged in
     else :
