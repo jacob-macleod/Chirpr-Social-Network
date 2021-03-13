@@ -7,16 +7,58 @@
     <body>
       <script>
         posts = {{ posts|tojson }}
+        like_status = {{ like_status|tojson }}
+        console.log(like_status)
+        document.cookie="post_liked=%NoneValue%"
 
-        //For each of the items in posts, create a paragraph with the data of posts[i]
+
+        //For each of the items in posts, create a paragraph with the data of posts[i] and a like button
         for (i=0;i<posts.length;i++) {
+          posts_body = document.getElementById("old_posts_body")
+
+          //Create the paragraph containing the post content
           var post = document.createElement("p")
-          post.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+          posts_body.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
           post.setAttribute("class", "description")
           post.innerHTML = posts[i]
 
-          posts_body = document.getElementById("old_posts_body")
+          //Create the like button
+          var button = document.createElement("button")
+          
+          //Change button depending on whether post has been liked or not
+          if (like_status[i] == "True") {
+            button.innerHTML = "Liked"
+            button.setAttribute("class", "inactive_button")
+          } else {
+            button.innerHTML = "Like"
+            button.setAttribute("class", "button")
+          }
+
+          button.setAttribute("id", post.innerHTML)
+          //Only way to store i
+          button.setAttribute("name", i)
+          //alert(this.id)
+          button.setAttribute("onclick", "like_post(this.id, this.name)")
+
+
+
+          //Append the items
           posts_body.appendChild(post)
+          posts_body.appendChild(button)
+
+        }
+
+
+
+        //Like post
+        function like_post (post, i) {
+          if (like_status[i] == "False") {
+            document.cookie = "post_liked=" + post
+            window.open("/following", "_self")
+          } else {
+            document.cookie = "post_liked=--%---/" + post
+            window.open("/following", "_self")
+          }
         }
 
       </script>

@@ -116,7 +116,6 @@ def check_for_follow (user_name, profile_name, mode) :
 
                 #Save following to a new str but don't count following[i] if the username == the username you want to unfollow 
                 for i in range(0, len(following)) :
-                    print (request.cookies.get("username"))
                     if following[i] != request.cookies.get("username") :
                         if following[i] != "" :
                             following_str = following_str + "%" + following[i]
@@ -196,8 +195,64 @@ def find_follower_posts () :
     else :
         return ["You aren't logged in!"]
 
+#Like the post with the data of post_liked
+def like_post (mode) :
+    i = 0
+    x = 0
+    z = 0
 
+    string_to_return = []
+    cookies = request.cookies.get("post_liked")
+    try :
+        for i in posts.find() :
+            match_found = False
+            post_data = i.get("post")
+            post_likes = i.get("likes")
+            users_liked = i.get("users_liked")
 
+            if users_liked != None :
+                users_liked_arr = users_liked.split("%")
+            else :
+                users_liked_arr = "exampleUsern%ameToSt%opTheCodeThrowingAnError%".split("%")
+
+            print (request.cookies.get("post_liked").split("/")[0])
+            if request.cookies.get("post_liked").split("/")[0] != "--%---" :
+                if post_data == request.cookies.get("post_liked") and post_data != None :
+                    #Like post
+                    if mode == "edit" :
+                        posts.update_one({"post":post_data}, {"$set": {"likes":post_likes + 1}})
+                        posts.update_one({"post":post_data}, {"$set": {"users_liked":users_liked + "%" + request.cookies.get("username")}})
+            else :
+                if post_data == request.cookies.get("post_liked").split("/")[1] :
+                    users_liked_str = ""
+                    #Unlike post 
+                    users_liked_str = ""
+                    for x in range(0, len(users_liked_arr)) :
+                        if users_liked_arr[x] != request.cookies.get("username") :
+                            if users_liked_arr[x] != "" :
+                                users_liked_str = users_liked_str + "%" + users_liked_arr[x]
+                        x = x + 1
+                    if mode == "edit" :
+                        posts.update_one({"post":post_data}, {"$set": {"likes":post_likes - 1}})
+                        posts.update_one({"post":post_data}, {"$set": {"users_liked":users_liked_str}})
+            
+            
+            
+            if post_data != None:
+                #Get list of whether the currently logged in user has liked each post
+                for z in range(0, len(users_liked_arr)):
+                    if users_liked_arr[z] == request.cookies.get("username") and match_found != True:
+                        string_to_return.append("True")
+                        match_found = True
+
+                if match_found == False:
+                    string_to_return.append("False")
+
+        return string_to_return
+    except Exception as e :
+        print (e)
+        return "False"
+    return "False"
 
 
 @app.route("/")
@@ -215,12 +270,12 @@ def index():
     user_posts = []
     if find_whether_cookies_or_parameters_store_username() == "cookies" :
         if post_contents != "%NoneValue%" :
-            post_data = {"username":request.cookies.get("username"), "post":post_contents}
+            post_data = {"username":request.cookies.get("username"), "post":post_contents, "likes":0, "users_liked":""}
             posts.insert_one(post_data)
 
     elif find_whether_cookies_or_parameters_store_username() == "variables" :
         if post_contents != "%NoneValue%" :
-            post_data = {"username":username, "post":post_contents}
+            post_data = {"username":username, "post":post_contents, "likes":0, "users_liked":0}
             posts.insert_one(post_data)
 
 
@@ -332,7 +387,10 @@ def search () :
 
 @app.route("/following", methods=["POST", "GET"])
 def following () :
-    return render_template("following.html", posts=find_follower_posts())
+    #Like posts if you need to
+    like_post("edit")
+    like_status = like_post("view")
+    return render_template("following.html", posts=find_follower_posts(), like_status=like_status)
 
 
 if __name__ == "__main__":
