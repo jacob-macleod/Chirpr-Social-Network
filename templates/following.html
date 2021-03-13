@@ -15,10 +15,11 @@
         //For each of the items in posts, create a paragraph with the data of posts[i] and a like button
         for (i=0;i<posts.length;i++) {
           posts_body = document.getElementById("old_posts_body")
+          individual_post_container = document.createElement("div")
 
           //Create the paragraph containing the post content
           var post = document.createElement("p")
-          posts_body.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+          individual_post_container.setAttribute("style", "padding:10px !important;border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
           post.setAttribute("class", "description")
           post.innerHTML = posts[i]
 
@@ -43,8 +44,10 @@
 
 
           //Append the items
-          posts_body.appendChild(post)
-          posts_body.appendChild(button)
+          posts_body.appendChild(individual_post_container)
+          individual_post_container.appendChild(post)
+          individual_post_container.appendChild(button)
+          posts_body.appendChild(document.createElement("br"))
 
         }
 
