@@ -10,6 +10,7 @@
       <script>
         posts = {{ posts|tojson }}
         like_status = {{ like_status|tojson }}
+        creators = {{ creators|tojson }}
         console.log(like_status)
         document.cookie="post_liked=%NoneValue%"
 
@@ -18,6 +19,11 @@
         for (i=0;i<posts.length;i++) {
           posts_body = document.getElementById("old_posts_body")
           individual_post_container = document.createElement("div")
+
+          //Create the creator icon
+          creator = document.createElement("p")
+          creator.setAttribute("class", "small_header")
+          creator.innerHTML = creators[i]
 
           //Create the paragraph containing the post content
           var post = document.createElement("p")
@@ -47,6 +53,7 @@
 
           //Append the items
           posts_body.appendChild(individual_post_container)
+          individual_post_container.appendChild(creator)
           individual_post_container.appendChild(post)
           individual_post_container.appendChild(button)
           posts_body.appendChild(document.createElement("br"))
@@ -71,6 +78,16 @@
     <style>
            body {
     background: #FFFFFF;
+  }
+
+  .small_header {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+  
+    color: #332B31;
   }
 
   .button {

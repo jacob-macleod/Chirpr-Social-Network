@@ -1,9 +1,11 @@
+print ("Remember to start mongodb in the terminal, possibly using sudo systemctl start mongod!")
+
+
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 import pymongo
 import json
 import ast
 
-print ("Remember to start mongodb in the terminal, possibly using sudo systemctl start mongod!")
 
 app = Flask(__name__)
 global username
@@ -195,6 +197,28 @@ def find_follower_posts () :
     else :
         return ["You aren't logged in!"]
 
+
+
+def find_creator_of_liked_posts () :
+    i = 0
+    x = 0
+    follower_posts = find_follower_posts()
+    creators = [""]
+
+    #Iterate through all the posts and find the post in follower post, then return the creator of that post
+    for i in posts.find() :
+        for x in range(0, len(follower_posts)) :
+            post = str(i.get("post"))
+            if post == str(follower_posts[x]) :
+                creators.append(i.get("username"))
+    if creators[0] != "" :
+        return ["Cannot Find Creator"]
+    else :
+        creators.pop(0)
+        return creators
+
+
+
 #Like the post with the data of post_liked
 def like_post (mode) :
     i = 0
@@ -215,7 +239,6 @@ def like_post (mode) :
             else :
                 users_liked_arr = "exampleUsern%ameToSt%opTheCodeThrowingAnError%".split("%")
 
-            print (request.cookies.get("post_liked").split("/")[0])
             if request.cookies.get("post_liked").split("/")[0] != "--%---" :
                 if post_data == request.cookies.get("post_liked") and post_data != None :
                     #Like post
@@ -390,7 +413,8 @@ def following () :
     #Like posts if you need to
     like_post("edit")
     like_status = like_post("view")
-    return render_template("following.html", posts=find_follower_posts(), like_status=like_status)
+
+    return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts())
 
 
 if __name__ == "__main__":

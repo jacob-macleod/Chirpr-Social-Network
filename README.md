@@ -7,7 +7,7 @@
 # Chirpr
 Chirpr is an Open Source, Privacy Focused Social Media App
 
-**IN PROGRESS** - I'm still developing the basic features - it'll take a few weeks!
+**IN PROGRESS** - I'm still developing the basic features - it'll take a few days!
 
 ## Planned and/or Implemented Features:
 * Following Page
