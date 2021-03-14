@@ -219,6 +219,26 @@ def find_creator_of_liked_posts () :
 
 
 
+def find_like_count_of_liked_posts () :
+    i = 0
+    x = 0
+    follower_posts = find_follower_posts()
+    creators = [""]
+
+    #Iterate through all the posts and find the post in follower post, then return the creator of that post
+    for i in posts.find() :
+        for x in range(0, len(follower_posts)) :
+            post = str(i.get("post"))
+            if post == str(follower_posts[x]) :
+                creators.append(i.get("likes"))
+    if creators[0] != "" :
+        return ["Cannot Find Like Count"]
+    else :
+        creators.pop(0)
+        return creators
+
+
+
 #Like the post with the data of post_liked
 def like_post (mode) :
     i = 0
@@ -413,8 +433,8 @@ def following () :
     #Like posts if you need to
     like_post("edit")
     like_status = like_post("view")
-
-    return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts())
+    
+    return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts(), likes=find_like_count_of_liked_posts())
 
 
 if __name__ == "__main__":

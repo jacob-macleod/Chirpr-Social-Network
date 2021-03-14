@@ -11,6 +11,8 @@
         posts = {{ posts|tojson }}
         like_status = {{ like_status|tojson }}
         creators = {{ creators|tojson }}
+        likes = {{ likes|tojson }}
+
         console.log(like_status)
         document.cookie="post_liked=%NoneValue%"
 
@@ -31,6 +33,13 @@
           post.setAttribute("class", "description")
           post.innerHTML = posts[i]
 
+          //Create the like count
+          var like_count = document.createElement("p")
+          like_count.setAttribute("class", "greyed")
+          like_count.innerHTML = likes[i] + " likes ---->   ."
+          like_count.setAttribute("style", "display:inline-block")
+
+
           //Create the like button
           var button = document.createElement("button")
           
@@ -43,10 +52,11 @@
             button.setAttribute("class", "button")
           }
 
-          button.setAttribute("id", post.innerHTML)
+          like_count.setAttribute("style", "display:inline-block")
           //Only way to store i
+          button.setAttribute("id", post.innerHTML)
           button.setAttribute("name", i)
-          //alert(this.id)
+
           button.setAttribute("onclick", "like_post(this.id, this.name)")
 
 
@@ -55,6 +65,7 @@
           posts_body.appendChild(individual_post_container)
           individual_post_container.appendChild(creator)
           individual_post_container.appendChild(post)
+          individual_post_container.appendChild(like_count)
           individual_post_container.appendChild(button)
           posts_body.appendChild(document.createElement("br"))
 
