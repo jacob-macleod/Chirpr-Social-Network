@@ -31,15 +31,15 @@
 
           //Create the paragraph containing the post content
           var post = document.createElement("p")
-          individual_post_container.setAttribute("style", "padding:10px !important;border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+          individual_post_container.setAttribute("style", "padding: 10px; box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1); border-radius: 8px;")
           post.setAttribute("class", "small_header")
           post.innerHTML = posts[i]
 
           //Create the like count
           var like_count = document.createElement("p")
           like_count.setAttribute("class", "greyed")
-          like_count.innerHTML = "⠀   " + likes[i] + " Likes"
-          like_count.setAttribute("style", "display: inline-grid;  padding:10px;")
+          like_count.setAttribute("style", "display: inline-grid;")
+          like_count.innerHTML = likes[i] + " Likes" + "⠀   " 
 
 
           //Create the like button
@@ -67,8 +67,8 @@
           posts_body.appendChild(individual_post_container)
           individual_post_container.appendChild(creator)
           individual_post_container.appendChild(post)
-          individual_post_container.appendChild(button)
           individual_post_container.appendChild(like_count)
+          individual_post_container.appendChild(button)
           posts_body.appendChild(document.createElement("br"))
 
         }

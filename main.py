@@ -199,6 +199,34 @@ def find_follower_posts () :
 
 
 
+def get_latest_posts () :
+    i = 0
+    counter = 0
+    x = 0
+    total_posts = []
+    recent_posts = []
+
+
+    #Save all posts to array
+    for i in posts.find() :
+            total_posts.append(i.get("post"))
+            counter = counter + 1
+
+
+    #If there are more than five posts the save then most recent posts to an array, otherwise return all the posts
+    for x in range(0, counter) :
+        if counter > 5 and x >= counter - 6:
+            recent_posts.append(total_posts[i])
+        else : 
+            return total_posts
+        x = x + 1
+    
+    return recent_posts
+
+
+
+
+
 def find_creator_of_liked_posts () :
     i = 0
     x = 0
@@ -225,7 +253,7 @@ def find_like_count_of_liked_posts () :
     follower_posts = find_follower_posts()
     creators = [""]
 
-    #Iterate through all the posts and find the post in follower post, then return the creator of that post
+    #Iterate through all the posts and find the post in follower post, then return the likes of that post
     for i in posts.find() :
         for x in range(0, len(follower_posts)) :
             post = str(i.get("post"))
@@ -433,7 +461,7 @@ def following () :
     #Like posts if you need to
     like_post("edit")
     like_status = like_post("view")
-    
+
     return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts(), likes=find_like_count_of_liked_posts())
 
 

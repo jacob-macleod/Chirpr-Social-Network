@@ -8,12 +8,26 @@
 <head>
 </head>
 <body>
-<p class="header">What's on your mind?</p>
-<textarea cols="40" rows = "5" id="text_box" class="post_input" placeholder="Write something here"></textarea>
-<br>
-<button class="button" onclick="post_thingamijigy()">Post</button>
-<p class="header">Some of your previous posts:</p>
-<div id ="old_posts_body"></div>
+  <div class="grid_container">
+    <div style="padding-top: 3vh;">
+      <p class="active_tab" onclick="window.open('/', '_self')">Create Post</p>
+      <p class="inactive_tab" onclick="window.open('/sign_up', '_self')">Sign Up</p>
+      <p class="inactive_tab" onclick="window.open('/sign_in', '_self')">Sign In</p>
+      <p class="inactive_tab" onclick="window.open('/following', '_self')">Following</p>
+      <p class="inactive_tab" onclick="window.open('/search', '_self')">Search</p>
+    </div>
+    <div class="seperator"></div>
+    <div>
+      <p class="header">What's on your mind?</p>
+      <div class="text_area">
+        <p style = "padding-left: 10px;" contenteditable=true id="text_box" class="post_input" placeholder="Write something here">Write something here</p>
+      </div>
+      <br>
+      <button class="button" onclick="post_thingamijigy()">Post</button>
+      <p class="header">Some of your previous posts:</p>
+      <div id ="old_posts_body"></div>
+    </div>
+  </div>
 </body>
 <script>
     document.cookie="followed=%NoneValue%"
@@ -24,7 +38,7 @@
     //For each of the items in user_posts, create a paragraph with the data of user_posts[i]
     for (i=0;i<user_posts.length;i++) {
       var post = document.createElement("p")
-      post.setAttribute("style", "border: 1px solid #9F9399;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius:8px;")
+      post.setAttribute("style", "padding: 10px; box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1); border-radius: 8px;")
       post.setAttribute("class", "description")
       post.innerHTML = user_posts[i]
 
@@ -32,10 +46,11 @@
       posts_body.appendChild(post)
     }
 
+    
+
     //Saves the post the user has typed in to cookie so flask can read it
     function post_thingamijigy () {
-        textarea = document.getElementById("text_box").value
-        console.log(textarea)
+        textarea = document.getElementById("text_box").innerHTML
         document.cookie="post="+textarea
         window.open("/", '_self')
     }
@@ -47,6 +62,14 @@
     background: #FFFFFF;
   }
 
+  .text_area {
+    background: #F8FAFB;
+    border: 1px solid #666172;
+    box-sizing: border-box;
+    box-shadow: -2px 2px 4px rgba(223, 225, 226, 0.2), 2px -2px 4px rgba(223, 225, 226, 0.2), -2px -2px 4px rgba(255, 255, 255, 0.9), 2px 2px 5px rgba(223, 225, 226, 0.9), inset 1px 1px 2px rgba(255, 255, 255, 0.3), inset -1px -1px 2px rgba(223, 225, 226, 0.5);
+    border-radius: 8px;
+  }
+
   .post_input {
     font-family: Roboto;
     font-style: normal;
@@ -56,6 +79,26 @@
   
     color: #666172;
   }
+
+  .grid_container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+  }
+
+  .seperator {
+    position: absolute;
+    width: 11px;
+    height: 100vh;
+    left: 10%;
+    top: 0px;
+
+    background: #FFFFFF;
+    opacity: 0.5;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(192, 192, 194, 0.5), inset -1px 1px 2px rgba(192, 192, 194, 0.2), inset 1px -1px 2px rgba(192, 192, 194, 0.2), inset -1px -1px 2px rgba(255, 255, 255, 0.9), inset 1px 1px 3px rgba(192, 192, 194, 0.9);
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
 
   .button {
     cursor: pointer;
