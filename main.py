@@ -235,10 +235,12 @@ def find_creator_of_liked_posts () :
 
     #Iterate through all the posts and find the post in follower post, then return the creator of that post
     for i in posts.find() :
-        for x in range(0, len(follower_posts)) :
-            post = str(i.get("post"))
-            if post == str(follower_posts[x]) :
-                creators.append(i.get("username"))
+        post = str(i.get("post"))
+        if post == str(follower_posts[x]) :
+            creators.append(i.get("username"))
+        x = x + 1
+
+
     if creators[0] != "" :
         return ["Cannot Find Creator"]
     else :
@@ -252,17 +254,21 @@ def find_like_count_of_liked_posts () :
     x = 0
     follower_posts = find_follower_posts()
     creators = [""]
+    f = 0
 
     #Iterate through all the posts and find the post in follower post, then return the likes of that post
     for i in posts.find() :
-        for x in range(0, len(follower_posts)) :
-            post = str(i.get("post"))
-            if post == str(follower_posts[x]) :
-                creators.append(i.get("likes"))
+        post = str(i.get("post"))
+        if post == str(follower_posts[x]) :
+            creators.append(i.get("likes"))
+        x = x + 1
+
+    print (f)
     if creators[0] != "" :
         return ["Cannot Find Like Count"]
     else :
         creators.pop(0)
+        print (creators)
         return creators
 
 
@@ -341,12 +347,12 @@ def index():
     user_posts = []
     if find_whether_cookies_or_parameters_store_username() == "cookies" :
         if post_contents != "%NoneValue%" :
-            post_data = {"username":request.cookies.get("username"), "post":post_contents, "likes":0, "users_liked":""}
+            post_data = {"username":request.cookies.get("username"), "post":post_contents, "likes":1, "users_liked":request.cookies.get("username")}
             posts.insert_one(post_data)
 
     elif find_whether_cookies_or_parameters_store_username() == "variables" :
         if post_contents != "%NoneValue%" :
-            post_data = {"username":username, "post":post_contents, "likes":0, "users_liked":0}
+            post_data = {"username":username, "post":post_contents, "likes":1, "users_liked":request.cookies.get("username")}
             posts.insert_one(post_data)
 
 
@@ -461,6 +467,7 @@ def following () :
     #Like posts if you need to
     like_post("edit")
     like_status = like_post("view")
+    print (find_like_count_of_liked_posts())
 
     return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts(), likes=find_like_count_of_liked_posts())
 

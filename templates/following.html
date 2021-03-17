@@ -3,9 +3,21 @@
   <link rel="shortcut icon" type="image/jpg" href="{{url_for('static', filename='favicon.png')}}"/>
   <title>Chirpr - Feed</title>
     <head></head>
-    <p class="header">Latest Posts</p>
-    <p class="description">From people you're following</p>
-    <div id="old_posts_body"></div>
+    <div class="grid_container">
+      <div style="padding-top: 3vh;">
+        <p class="inactive_tab" onclick="window.open('/', '_self')">Create Post</p>
+        <p class="inactive_tab" onclick="window.open('/sign_up', '_self')">Sign Up</p>
+        <p class="inactive_tab" onclick="window.open('/sign_in', '_self')">Sign In</p>
+        <p class="active_tab" onclick="window.open('/following', '_self')">Following</p>
+        <p class="inactive_tab" onclick="window.open('/search', '_self')">Search</p>
+      </div>
+      <div class="seperator"></div>
+      <div>
+        <p class="header">Latest Posts</p>
+        <p class="description">From people you're following</p>
+        <div id="old_posts_body"></div>
+      </div>
+    </div>
     <body>
       <script>
         posts = {{ posts|tojson }}
@@ -13,7 +25,9 @@
         creators = {{ creators|tojson }}
         likes = {{ likes|tojson }}
 
-        console.log(like_status)
+        console.log(likes)
+        console.log(creators)
+        console.log(posts)
         document.cookie="post_liked=%NoneValue%"
 
 
