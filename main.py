@@ -110,8 +110,8 @@ def check_for_follow (user_name, profile_name, mode) :
             name = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile_name)}}).get(encrypt("username")))
             following = decrypt(login_data.find_one({encrypt("username"):{"$eq":encrypt(profile_name)}}).get(encrypt("following")))
             
-            #Detect --%---/ symbol which means unfollow 
-            if request.cookies.get("followed").split("/")[0] == "--%---" :
+            #Detect --%---/separator%$£$% symbol which means unfollow 
+            if request.cookies.get("followed").split("/separator%$£$%")[0] == "--%---" :
                 #Unfollow user_name
                 following = following.split("%")
                 following_str = ""
@@ -293,14 +293,17 @@ def like_post (mode) :
             else :
                 users_liked_arr = "exampleUsern%ameToSt%opTheCodeThrowingAnError%".split("%")
 
-            if request.cookies.get("post_liked").split("/")[0] != "--%---" :
+            if request.cookies.get("post_liked").split("/separator%$£$%")[0] != "--%---" :
                 if post_data == request.cookies.get("post_liked") and post_data != None :
                     #Like post
                     if mode == "edit" :
                         posts.update_one({"post":post_data}, {"$set": {"likes":post_likes + 1}})
                         posts.update_one({"post":post_data}, {"$set": {"users_liked":users_liked + "%" + request.cookies.get("username")}})
             else :
-                if post_data == request.cookies.get("post_liked").split("/")[1] :
+                print (post_data)
+                post_liked = request.cookies.get("post_liked").split("/separator%$£$%")[1]
+                print (post_liked)
+                if post_data == post_liked :
                     users_liked_str = ""
                     #Unlike post 
                     users_liked_str = ""

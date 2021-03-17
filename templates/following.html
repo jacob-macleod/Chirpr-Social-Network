@@ -95,7 +95,7 @@
             document.cookie = "post_liked=" + post
             window.open("/following", "_self")
           } else {
-            document.cookie = "post_liked=--%---/" + post
+            document.cookie = "post_liked=--%---/separator%$£$%" + post
             window.open("/following", "_self")
           }
         }
@@ -115,6 +115,27 @@
     line-height: 21px;
   
     color: #332B31;
+  }
+
+  .grid_container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+  }
+
+
+  .seperator {
+    position: absolute;
+    width: 11px;
+    height: 100vh;
+    left: 10%;
+    top: 0px;
+
+    background: #FFFFFF;
+    opacity: 0.5;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(192, 192, 194, 0.5), inset -1px 1px 2px rgba(192, 192, 194, 0.2), inset 1px -1px 2px rgba(192, 192, 194, 0.2), inset -1px -1px 2px rgba(255, 255, 255, 0.9), inset 1px 1px 3px rgba(192, 192, 194, 0.9);
+    grid-column-start: 3;
+    grid-column-end: 4;
   }
 
   .button {
