@@ -33,13 +33,19 @@
           <p class="description" for="password">Password</p> 
           <input class="input" type="password" id="password" name="pword" placeholder="password">
           <br>
+          <br>
           <button class="button" type="submit">Sign In</button> 
     </div>
+    <img src="{{url_for('static', filename='undraw_social_update_puv0.png')}}" class="sign_in">
     </div>
 </body>
 <style>
     body {
     background: #FFFFFF;
+  }
+
+  .sign_in {
+    width: 90vh;
   }
 
   .button {
@@ -120,7 +126,7 @@
 
   .grid_container {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     padding: 10px;
   }
 

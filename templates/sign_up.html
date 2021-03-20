@@ -37,13 +37,19 @@
           <p class="description" for="password">Password Confirmation</p> 
           <input class="input" type="password" id="password_confirm" name="pword_confirm" placeholder="password confirmation">
           <br>
+          <br>
           <button class="button" type="submit">Sign Up</button> 
       </div>
+      <img src="{{url_for('static', filename='undraw_Social_networking_re_i1ex.png')}}" class="sign_up">
     </div>
 </body>
 <style>
     body {
     background: #FFFFFF;
+  }
+
+  .sign_up {
+    width: 90vh;
   }
 
   .button {
@@ -140,7 +146,7 @@
 
   .grid_container {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     padding: 10px;
   }
 
