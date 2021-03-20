@@ -3,9 +3,29 @@
   <link rel="shortcut icon" type="image/jpg" href="{{url_for('static', filename='favicon.png')}}"/>
   <title>Chirpr - Login Failed</title>
     <head></head>
-    <p class="header">Sorry, the sign up failed</p>
-    <p class="description">This could be because a user with the username you chose already exists, or because your passwords didn't match</p>
-    <button onclick="window.open('/sign_up', '_self')" class="button">Try Again</button>
+    <div class="grid_container">
+      <div style="padding-top: 3vh;">
+        <p class="active_tab" style="position:fixed;" onclick="window.open('/', '_self')">Create Post</p>
+        <br>
+        <br>
+        <p class="inactive_tab" style="position:fixed;" onclick="window.open('/sign_up', '_self')">Sign Up</p>
+        <br>
+        <br>
+        <p class="inactive_tab" style="position:fixed;" onclick="window.open('/sign_in', '_self')">Sign In</p>
+        <br>
+        <br>
+        <p class="inactive_tab" style="position:fixed;" onclick="window.open('/following', '_self')">Following</p>
+        <br>
+        <br>
+        <p class="inactive_tab" style="position:fixed;" onclick="window.open('/search', '_self')">Search</p>
+      </div>
+      <div class="seperator"></div>
+      <div>
+        <p class="header">Sorry, the sign up failed</p>
+        <p class="description">This could be because a user with the username you chose already exists, or because your passwords didn't match</p>
+        <button onclick="window.open('/sign_up', '_self')" class="button">Try Again</button>
+      </div>
+    </div>
     <body></body>
     <style>
            body {
@@ -26,6 +46,26 @@
     border: none;
   
     color: #F8FAFB;
+  }
+
+  .grid_container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+  }
+
+  .seperator {
+    position: fixed;
+    width: 11px;
+    height: 100vh;
+    left: 8.5%;
+    top: 0px;
+
+    background: #FFFFFF;
+    opacity: 0.5;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(192, 192, 194, 0.5), inset -1px 1px 2px rgba(192, 192, 194, 0.2), inset 1px -1px 2px rgba(192, 192, 194, 0.2), inset -1px -1px 2px rgba(255, 255, 255, 0.9), inset 1px 1px 3px rgba(192, 192, 194, 0.9);
+    grid-column-start: 3;
+    grid-column-end: 4;
   }
   
   .inactive_button {
