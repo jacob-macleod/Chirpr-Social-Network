@@ -5,6 +5,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, mak
 import pymongo
 import json
 import ast
+import os
+
+#Start the database
+os.popen("sudo systemctl start mongob")
 
 
 app = Flask(__name__)
