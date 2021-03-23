@@ -474,6 +474,15 @@ def following () :
 
     return render_template("following.html", posts=find_follower_posts(), like_status=like_status, creators=find_creator_of_liked_posts(), likes=find_like_count_of_liked_posts())
 
+@app.errorhandler(404)
+def page_not_found (e) :
+    return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def server_error (e) :
+    return render_template("500.html"), 500
+
 
 if __name__ == "__main__":
     app.run(port=5001)
