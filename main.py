@@ -8,7 +8,7 @@ import ast
 import os
 
 #Start the database
-os.popen("sudo systemctl start mongob")
+os.popen("systemctl start mongob")
 
 
 app = Flask(__name__)
