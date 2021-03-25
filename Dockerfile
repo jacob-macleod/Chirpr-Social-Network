@@ -6,7 +6,7 @@ WORKDIR /usr/src/Chirpr-Social-Network
 COPY . .
 
 #Install the dependencies
-RUN pip3 install --no-cache flask
+RUN pip3 install --no-cache flask pymongo
 
 #Use port 5000 to run
 EXPOSE 5000
