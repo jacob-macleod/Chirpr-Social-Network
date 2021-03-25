@@ -7,9 +7,6 @@ import json
 import ast
 import os
 
-#Start the database
-os.popen("systemctl start mongob")
-
 
 app = Flask(__name__)
 global username
@@ -489,4 +486,4 @@ def server_error (e) :
 
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(host="0.0.0.0", port=5001)
