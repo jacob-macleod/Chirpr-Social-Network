@@ -8,8 +8,8 @@ COPY . .
 #Install the dependencies
 RUN pip3 install --no-cache flask
 
-#Use port 5001 to run
-EXPOSE 5001
+#Use port 5000 to run
+EXPOSE 5000
 
 #Command to run the server
 CMD ["python", "./main.py"]
