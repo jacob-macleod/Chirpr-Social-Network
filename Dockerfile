@@ -14,7 +14,7 @@ RUN apt-get install gnupg
 RUN apt-get update && apt-get upgrade -y
 RUN echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
 RUN apt-get update && apt-get install mongodb-org -y
-RUN systemctl start mongod
+RUN service mongod start
 
 #Use port 5000 to run
 EXPOSE 5000
