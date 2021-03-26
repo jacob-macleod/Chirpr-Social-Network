@@ -1,4 +1,4 @@
-FROM python:3
+FROM mongo
 
 #Set the working directory in the flask container
 WORKDIR /usr/src/Chirpr-Social-Network
@@ -8,16 +8,8 @@ COPY . .
 #Install the dependencies
 RUN pip3 install --no-cache flask pymongo
 
-#Install mongodb
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
-RUN apt-get install gnupg
-RUN apt-get update && apt-get upgrade -y
-RUN echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-RUN apt-get update && apt-get install mongodb-org -y
-RUN service mongod start
-
 #Use port 5000 to run
 EXPOSE 5000
 
 #Command to run the server
-CMD ["python", "./main.py"]
+CMD ["python3", "./main.py"]
