@@ -6,6 +6,7 @@ WORKDIR /usr/src/Chirpr-Social-Network
 COPY . .
 
 #Install the dependencies
+RUN apt-get install -y wget
 RUN wget https://bootstrap.pypa.io/pip/3.5/get-pip.py --output get-pip.py
 RUN python3 get-pip.py
 RUN pip3 install --no-cache flask pymongo
