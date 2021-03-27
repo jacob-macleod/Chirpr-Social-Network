@@ -7,6 +7,11 @@ import json
 import ast
 import os
 
+try :
+    os.popen("mongod")
+except Exception as e :
+    print ("There's been an error with starting mongodb")
+    print (e)
 
 app = Flask(__name__)
 global username
