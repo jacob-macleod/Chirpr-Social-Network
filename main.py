@@ -1,6 +1,3 @@
-print ("Remember to start mongodb in the terminal, possibly using sudo systemctl start mongod!")
-
-
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 import pymongo
 import json
