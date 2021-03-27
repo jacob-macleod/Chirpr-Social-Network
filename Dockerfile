@@ -15,3 +15,4 @@ EXPOSE 5000
 
 #Command to run the server
 CMD ["python3", "./main.py"]
+CMD "mondod"
