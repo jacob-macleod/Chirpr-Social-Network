@@ -6,6 +6,7 @@ WORKDIR /usr/src/Chirpr-Social-Network
 COPY . .
 
 #Install the dependencies
+RUN add-apt-repository universe
 RUN apt-get install -y python3-pip
 RUN pip3 install --no-cache flask pymongo
 
