@@ -21,6 +21,8 @@ Chirpr is focused on serving the needs of the user, rather than fill the pockets
 * We don't show users the likes they've recieved - this reduces comparing oneself to others because you can't
 * We show users the likes of posts from people they've followed - this creates a sense of community
 * We don't have a trending page - you need to follow users to see their posts. This helps to combat social media addiction
+* There's no ads - your attention is not being sold
+* Intrusive ads don't follow you round and track you
 
 
 ## Installation
