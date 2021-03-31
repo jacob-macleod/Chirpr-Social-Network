@@ -8,7 +8,7 @@
   - [Bugs](#bugs)
 
 # Chirpr
-Chirpr is a more humane Social Media App. 
+Chirpr is a more humane Social Media App. You can find out more about us on our [website](https://jacob-macleod.github.io/Chirpr-Social-Network/)
 
 Chirpr is focused on serving the needs of the user, rather than fill the pockets of big corporations. It's totally free and will always be, and adds features focused on helping people manage social media in a better way.
 
