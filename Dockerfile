@@ -14,4 +14,5 @@ RUN pip3 install --no-cache flask pymongo
 EXPOSE 5000
 
 #Command to run the server
-CMD ["python3", "./main.py"]
+ENTRYPOINT ["python3", "./main.py"]
+CMD [5]

@@ -3,6 +3,7 @@ import pymongo
 import json
 import ast
 import os
+import sys
 
 try :
     os.popen("mongod")
@@ -22,7 +23,10 @@ database = client["social_app_db"]
 posts = database["posts"]
 login_data = database["login_data"]
 
-ENCRYPTION_KEY = 5
+ENCRYPTION_KEY = int(sys.argv[1])
+if ENCRYPTION_KEY == 5 :
+    print ("ENCRYPTION_KEY is default. This is not recommended due to security concernts. To rectify this, please run the server passing a different number as an argument for the ENCRYPTION_KEY")
+
 letters = ['A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
