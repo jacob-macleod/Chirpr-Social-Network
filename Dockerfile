@@ -15,4 +15,4 @@ EXPOSE 5000
 
 #Command to run the server
 ENTRYPOINT ["python3", "./main.py"]
-CMD [5]
+CMD ["5"]
