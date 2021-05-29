@@ -46,7 +46,7 @@ Next, you'll next to [install](https://www.mongodb.com/try/download/community) m
 
 Finally, you can enter the `Chirpr-Social-Network` directory, using `cd Chirpr-Social-Network` on linux, and run:
 
-`python3 main,py`
+`python3 main.py`
 
 To open Chirpr, you can go to http://localhost:5000/
 
