@@ -7,19 +7,7 @@ push to github:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
   script:
-    - rm -rf .git
-    - git init
-    - git remote add origin https://jacob-macleod:$GITHUB_PAT@github.com/jacob-macleod/Chirpr-Social-Network.git
-    - git status
-    - git add .
-    - git status
-    - git commit -m "$CI_COMMIT_MESSAGE"
-    - git config --global user.email "$EMAIL"
-    - git config --global user.name "jacob-macleod"
-    - git config pull.rebase false
-    - git pull origin main --allow-unrelated-histories
-    - git checkout -b main
-    - git push origin main
+    - echo "Pushed"
 
 
 
@@ -27,15 +15,4 @@ pull from github:
   stage: pull
   when: manual
   script:
-    - rm -rf git
-    - git init
-    - git remote set-url origin https://github.com/jacob-macleod/Chirpr-Social-Network
-    - git config --global user.email "$EMAIL"
-    - git config --global user.name "jacob-macleod"
-    - git config pull.rebase false
-    - git pull origin main --allow-unrelated-histories --force
-    - git remote set-url origin https://gitlab.com/jacob-macleod/Chirpr-Social-Network
-    - git config --global user.name "jmacleo1"
-    - git add .
-    - git commit -m "Pulled from GitHub"
-    - git push origin main
+    - echo "Pulled"
