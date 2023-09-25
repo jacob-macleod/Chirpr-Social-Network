@@ -16,7 +16,7 @@ Chirpr is focused on serving the needs of the user, rather than fill the pockets
 
 **It's Partially Done** - I've completed the first version, and although I'd like to develop more features, I'll need to make time for it
 
-This should also be pull mirrored on gitlab
+This repository should sync with gitlab
 
 ## How we help users
 * Chirpr is completely free, both now and in the future
