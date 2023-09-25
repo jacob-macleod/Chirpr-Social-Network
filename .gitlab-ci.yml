@@ -1,0 +1,19 @@
+stages:
+  - sync with github 
+
+push to github:
+  stage: sync with github
+  script:
+    - rm -rf .git
+    - git init
+    - git remote add origin https://jacob-macleod:$GITHUB_PAT@github.com/jacob-macleod/Chirpr-Social-Network.git
+    - git status
+    - git add .
+    - git status
+    - git commit -m "$CI_COMMIT_MESSAGE"
+    - git config --global user.email "$EMAIL"
+    - git config --global user.name "jacob-macleod"
+    - git config pull.rebase false
+    - git pull origin main --allow-unrelated-histories
+    - git checkout -b main
+    - git push origin main
